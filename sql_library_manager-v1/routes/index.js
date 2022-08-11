@@ -27,20 +27,22 @@ router.post('/books/new', async(req, res, next) => {
  res.redirect('/books');
 });
 
-/* POST /books/new - Shows book detail form */ 
-router.post('/books/:id', async(req, res, next) => {
- 
-
-});
-/* GET /books/:id - Updates book info in the database */ 
+/* GET /books/new - Shows book detail form */ 
 router.get('/books/:id', async(req, res, next) => {
-  
-
+ const book = await Book.findByPK(req.params.id);
+ res.render('update-book', { book, title: book.title })
+});
+/* POST /books/:id - Updates book info in the database */ 
+router.post('/books/:id', async(req, res, next) => {
+  const book = await Book.findByPk(req.params.id);
+  await book.update(req.body);
+  res.redirect('/books');
 });
 /* POST /books/:id/delete - Deletes a book - Careful, this can't be undone - create test book! */ 
 router.post('/books/:id/delete', async(req, res, next) => {
-  
-
+  const book = await Book.findByPk(req.params.id);
+  await book.destroy();
+  res.redirect('/books');
 });
 
 module.exports = router;
