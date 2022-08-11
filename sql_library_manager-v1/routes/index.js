@@ -5,7 +5,7 @@ var Book = require( '../models').Book;
 /* GET home page. */
 router.get('/', async(req, res, next) => {
   const books = await Book.findAll();
-  console.log( books.map(book => book.toJSON()) );
+  console.log(books.map(book => book.toJSON()) );
   res.json(books);
 });
 

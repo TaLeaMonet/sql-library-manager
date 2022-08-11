@@ -53,20 +53,27 @@ const sequelize = new Sequelize({
 })();
 
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
+/* catch 404 and forward to error handler */
+app.use(async(req, res, next) => {
+  const err = await new Error('Page Not Found')
+  err.status = 404;
+  res.render('page-not-found', { err });
   next(createError(404));
 });
 
-// error handler
+/* error handler */
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
+  if(err.status !== 404) {
+    err.status = 500;
+    err.message = err.message; 
+    console.log(err.status, err.message);
+  }
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', { err });
 });
 
 module.exports = app;
