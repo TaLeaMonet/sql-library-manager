@@ -29,7 +29,7 @@ router.post('/books/new', async(req, res, next) => {
 
 /* GET /books/new - Shows book detail form */ 
 router.get('/books/:id', async(req, res, next) => {
- const book = await Book.findByPK(req.params.id);
+ const book = await Book.findByPk(req.params.id);
  res.render('update-book', { book, title: book.title })
 });
 /* POST /books/:id - Updates book info in the database */ 
