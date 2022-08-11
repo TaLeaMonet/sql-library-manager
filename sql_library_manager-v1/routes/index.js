@@ -8,7 +8,7 @@ router.get('/', async(req, res, next) => {
   res.redirect('/books');
 });
 
-/* GET /books/ - Shows the full list of books */
+/* GET /books - Shows the full list of books */
 router.get('/books', async(req, res, next) => {
   const books = await Book.findAll();
   console.log( books.map(book => book.toJSON()) );
@@ -17,15 +17,16 @@ router.get('/books', async(req, res, next) => {
 
 /* GET /books/new - Shows the create new book form */
 router.get('/books/new', async(req, res, next) => {
- 
-  
+ const books = Book.findAll();
+ res.render('new-book');
 });
 
-/* GET /books/new - Posts a new book to the database */ 
-router.get('/books/new', async(req, res, next) => {
-  
-
+/* POST /books/new - Posts a new book to the database */ 
+router.post('/books/new', async(req, res, next) => {
+ const book = await Book.create(req.body);
+ res.redirect('/books');
 });
+
 /* POST /books/new - Shows book detail form */ 
 router.post('/books/:id', async(req, res, next) => {
  
