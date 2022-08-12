@@ -5,27 +5,20 @@ block content
 
   p Welcome to #{title}
 
-     a.button(href="/books/new") Create New Book
-   
+  p
+    a.button(href="/books/new") Create New Book
+
   table 
-    tr 
-
-     th Title
-
-     th Author 
-
-     th Genre
-
-     th Year
-
+    tr
+      th Title
+      th Author
+      th Genre
+      th Year
     tbody
-     each book in books
-      tr 
-        td 
-         a(href=`/books/${book.id}`) #{book.title}   
-
-         td #{book.author}
-
-         td #{book.genre}
-
-         td #{book.year}
+      for book in books
+        tr
+          td
+            a(href=`/books/${book.id}`) #{book.title}
+            td #{book.author}
+            td #{book.genre}
+            td #{book.year}
