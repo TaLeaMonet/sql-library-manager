@@ -41,13 +41,19 @@ router.get('/books/:id', async(req, res, next) => {
  const book = await Book.findByPk(req.params.id);
  res.render('update-book', { book, title: book.title })
 });
+/* POST /books/:id/delete - Deletes a book - Careful, this can't be undone - create test book! */ 
+router.post('/books/:id/delete', async(req, res, next) => {
+  const book = await Book.findByPk(req.params.id);
+  await book.destroy();
+  res.redirect('/books');
+});
 /* POST /books/:id - Updates book info in the database */ 
 router.post('/books/:id', async(req, res, next) => {
   let book;
   try {
     const book = await Book.findByPk(req.params.id);
     if(book) {
-      await article.update(req.body);
+      await book.update(req.body);
     } else {
       res.sendStatus(404);
     }
@@ -61,11 +67,6 @@ router.post('/books/:id', async(req, res, next) => {
   }
   res.redirect('/books');
 });
-/* POST /books/:id/delete - Deletes a book - Careful, this can't be undone - create test book! */ 
-router.post('/books/:id/delete', async(req, res, next) => {
-  const book = await Book.findByPk(req.params.id);
-  await book.destroy();
-  res.redirect('/books');
-});
+
 
 module.exports = router;

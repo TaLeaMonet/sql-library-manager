@@ -8,7 +8,7 @@ block content
                 h1 Update Book
 
 
-        form(action='/books/:id' method='POST')
+        form(action=`/books/${book.id}` method='POST')
 
                 p
                         label(for='title') Title
@@ -28,8 +28,9 @@ block content
                 p
                         a.button(href='/') Cancel 
                 p
-                        input(type='submit' value='Delete Book')
 
-                        form(method='post' action='/books/:id/delete') 
-                p
-                        a.button(href='/') Home
+        form(method='post' action=`/books/${book.id}/delete`) 
+                p 
+                        input(type='submit' value='Delete Book')
+                
+                
