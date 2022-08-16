@@ -53,24 +53,35 @@ const sequelize = new Sequelize({
 })();
 
 
-/* catch 404 and forward to error handler */
-app.use(async(req, res, next) => {
-  const err = await new Error('Page Not Found')
+/* 404 error handling */
+app.use((req, res, next) => {
+  const err = new Error('Not found');
   err.status = 404;
-  res.render('page-not-found', { err });
-  next(createError(404));
-});
+  err.message = 'Page Not Found'
+  console.log('Looks like this page does not exist', err);
+      next(err);
+      });
 
-/* error handler */
+  /* Global error handling */
+  app.use((err, req, res, next) => {
+      if(err) {
+          if(err.status === 404) {
+              res.status(404).render('page-not-found', {err}); 
+           } else {
+                err.status = 500;
+                console.log('Uh oh, looks like there was a problem', err) 
+                res.status(err.status || 500).render('error', {err}) 
+              }
+          }
+      });
+
+
+// error handler - not sure if this is still necessary now that I've created error handling! 
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-  if(err.status !== 404) {
-    err.status = 500;
-    err.message = err.message; 
-    console.log(err.status, err.message);
-  }
+  
   // render the error page
   res.status(err.status || 500);
   res.render('error', { err });
