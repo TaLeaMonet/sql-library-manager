@@ -38,8 +38,22 @@ router.post('/books/new', async(req, res, next) => {
 
 /* GET /books/new - Shows book detail form */ 
 router.get('/books/:id', async(req, res, next) => {
+let book;
+try { 
  const book = await Book.findByPk(req.params.id);
+ if(book) {
  res.render('update-book', { book, title: book.title })
+ } else {
+   res.sendStatus(404);
+ }
+} catch(err) {
+  if(error.name === "SequelizeValidationError") {
+    book = await Book.build(req.body);
+    res.render("books/new", {book, errors: error.errors, title: "New Book"})
+  } else {
+    throw error;
+  }
+}
 });
 /* POST /books/:id/delete - Deletes a book - Careful, this can't be undone - create test book! */ 
 router.post('/books/:id/delete', async(req, res, next) => {
